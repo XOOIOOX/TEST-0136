@@ -1,6 +1,7 @@
 #include "TEST0136.h"
 #include "QSqlTableModel"
 //#include "QSqlQueryModel"
+#include "QStandardItemModel"
 
 TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 {
@@ -17,7 +18,8 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 	tableView = ui.tableView;
 	tableModel = new QSqlTableModel(tableView);
 	tableView->setModel(tableModel);
-	tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	//itemDelegate = new DataItemDelegate;
+	//tableView->setItemDelegate(itemDelegate);
 	tableLoad();
 	tableView->show();
 }

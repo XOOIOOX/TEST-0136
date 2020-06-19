@@ -5,6 +5,7 @@
 #include <QtSql>
 #include <QSqlTableModel>
 #include <QTableView>
+#include "DataItemDelegate.h"
 
 class TEST0136 : public QMainWindow
 {
@@ -20,6 +21,7 @@ private:
 	QSqlDatabase dbase;									// текущая БД
 	QStringList tablesNames;							// список таблиц
 	int selectedTable{ 0 };								// номер выбранной таблицы
+	DataItemDelegate* itemDelegate;
 
 	void tableLoad();									// загрузка таблицы по номеру выбранной
 
