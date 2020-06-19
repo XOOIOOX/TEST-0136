@@ -5,17 +5,10 @@
 TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 {
 	ui.setupUi(this);
-
 	dbase = QSqlDatabase::addDatabase("QSQLITE");
 	dbase.setDatabaseName("sample.db");
 	if (!dbase.open()) { qDebug() << "Cannot read db!"; }
-
-	QSqlQuery query;
-
-	if (QSqlDatabase::drivers().isEmpty())
-	{
-		qDebug() << "no drivers";
-	}
+	if (QSqlDatabase::drivers().isEmpty()) { qDebug() << "no drivers"; }
 
 	tablesNames = dbase.tables();
 	ui.tableSelectSpin->setRange(0, tablesNames.size() - 1);
@@ -23,9 +16,9 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 
 	tableView = ui.tableView;
 	tableModel = new QSqlTableModel(tableView);
-	tableLoad();
-
 	tableView->setModel(tableModel);
+	tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	tableLoad();
 	tableView->show();
 }
 

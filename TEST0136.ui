@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>400</height>
+    <width>888</width>
+    <height>440</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,8 +27,8 @@
    <widget class="QSpinBox" name="tableSelectSpin">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>40</y>
+      <x>640</x>
+      <y>30</y>
       <width>51</width>
       <height>21</height>
      </rect>
