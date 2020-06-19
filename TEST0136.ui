@@ -17,10 +17,20 @@
    <widget class="QTableView" name="tableView">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>30</y>
+      <x>30</x>
+      <y>20</y>
       <width>471</width>
       <height>301</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="tableSelectSpin">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>40</y>
+      <width>51</width>
+      <height>21</height>
      </rect>
     </property>
    </widget>

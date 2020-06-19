@@ -17,19 +17,33 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 		qDebug() << "no drivers";
 	}
 
-	if (!query.exec("SELECT * FROM 'data12'"))
+	tablesNames = dbase.tables();
+	ui.tableSelectSpin->setRange(0, tablesNames.size() - 1);
+	connect(ui.tableSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedChangeSlot, Qt::DirectConnection);
+
+	tableView = ui.tableView;
+	tableModel = new QSqlTableModel(tableView);
+	tableLoad();
+
+	tableView->setModel(tableModel);
+	tableView->show();
+}
+
+void TEST0136::tableLoad()
+{
+	tableModel->setTable(tablesNames[selectedTable]);
+	tableModel->select();
+	tableModel->setEditStrategy(QSqlTableModel::OnFieldChange);
+	tableModel->setHeaderData(0, Qt::Horizontal, tr("Дата"));
+	tableModel->setHeaderData(1, Qt::Horizontal, tr("Значение"));
+	tableModel->setHeaderData(2, Qt::Horizontal, tr("Группа"));
+}
+
+void TEST0136::selectedChangeSlot(int num)
+{
+	if (num < tablesNames.size() && num >= 0 && num != selectedTable)
 	{
-		qDebug() << "Cannot select";
+		selectedTable = num;
+		tableLoad();
 	}
-
-	table = ui.tableView;
-	model = new QSqlTableModel(table);
-	model->setTable("data12");
-	model->select();
-	model->setEditStrategy(QSqlTableModel::OnFieldChange);
-	model->setHeaderData(0, Qt::Horizontal, tr("Name"));
-	model->setHeaderData(1, Qt::Horizontal, tr("Salary"));
-
-	table->setModel(model);
-	table->show();
 }

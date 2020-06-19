@@ -8,14 +8,21 @@
 
 class TEST0136 : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    TEST0136(QWidget *parent = Q_NULLPTR);
+	TEST0136(QWidget* parent = Q_NULLPTR);
 
 private:
-    Ui::TEST0136Class ui;
-    QTableView* table;
-    QSqlTableModel* model;
-    QSqlDatabase dbase;
+	Ui::TEST0136Class ui;
+	QTableView* tableView;								// вьюшка таблицы
+	QSqlTableModel* tableModel;							// sql-ная табличная модель
+	QSqlDatabase dbase;									// текущая БД
+	QStringList tablesNames;							// список таблиц
+	int selectedTable{ 0 };								// номер выбранной таблицы
+
+	void tableLoad();									// загрузка таблицы по номеру выбранной
+
+public slots:
+	void selectedChangeSlot(int num);					// слот смены выбранной таблицы
 };
