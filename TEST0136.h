@@ -16,6 +16,8 @@ class TEST0136 : public QMainWindow
 public:
 	TEST0136(QWidget* parent = Q_NULLPTR);
 
+	void groupSelectSpinSetup();
+
 private:
 	Ui::TEST0136Class ui;
 	QTableView* tableView;								// вьюшка таблицы
