@@ -84,7 +84,6 @@ void TEST0136::selectedGroupLoad()
 		}
 
 		tableModel->sortByDate();
-
 	}
 }
 
@@ -94,7 +93,6 @@ void TEST0136::selectedTableChangeSlot(int num)
 	{
 		selectedTable = num;
 		selectedTableLoad();
-		//tableModel->update();
 	}
 }
 
@@ -104,7 +102,6 @@ void TEST0136::selectedGroupChangeSlot(int num)
 	{
 		selectedGroup = num;
 		selectedGroupLoad();
-		//tableModel->update();
 	}
 }
 
