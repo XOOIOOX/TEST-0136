@@ -25,13 +25,16 @@ private:
 	QSqlDatabase dbase;									// текущая БД
 	QStringList tablesNames;							// список таблиц
 	int selectedTable{ 0 };								// номер выбранной таблицы
+	int selectedGroup{ BadIndex };						// номер выбранной группы
 	ListInt groupsList;
 	QSqlQuery dbQuery{ dbase };
 
 	void tableLoad();									// загрузка таблицы по номеру выбранной
 	void readGroups();
+	void readSelectedGroup();
 
 public slots:
-	void selectedChangeSlot(int num);					// слот смены выбранной таблицы
+	void selectedTableChangeSlot(int num);					// слот смены выбранной таблицы
+	void selectedGroupChangeSlot(int num);					// слот смены выбранной группы
 	void currentIndexChangedSlot(const QModelIndex& current, const QModelIndex& previous);
 };

@@ -16,7 +16,7 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 	tablesNames = dbase.tables();
 	ui.tableSelectSpin->setRange(0, tablesNames.size() - 1);
 
-	connect(ui.tableSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedChangeSlot, Qt::DirectConnection);
+	connect(ui.tableSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedTableChangeSlot, Qt::DirectConnection);
 	connect(&selectionSql, &QItemSelectionModel::currentRowChanged, this, &TEST0136::currentIndexChangedSlot);
 
 	tableView = ui.tableView;
@@ -25,8 +25,10 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 	tableView->setModel(currentTableModel);
 	tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-	tableLoad();
+
 	readGroups();
+
+	//tableLoad();
 	tableView->show();
 }
 
@@ -47,10 +49,33 @@ void TEST0136::readGroups()
 	while (query.next()) { groupsList.push_back(query.value(query.record().indexOf(number)).toInt()); }
 	groupsList.sort();
 	groupsList.unique();
-
 }
 
-void TEST0136::selectedChangeSlot(int num)
+void TEST0136::selectedGroupChangeSlot(int num)
+{
+	//selectedGroup
+}
+
+void TEST0136::readSelectedGroup()
+{
+	if (selectedGroup != BadIndex)
+	{
+		centralData.vectorSql.clear();
+		QSqlQuery query("SELECT  * FROM " + tablesNames[selectedTable] + "WHERE Number=" + QString(selectedGroup));
+
+		while (query.next())
+		{
+			centralData.vectorSql.push_back(
+				{
+					query.value(query.record().indexOf(0)).toDateTime(),
+					query.value(query.record().indexOf(0)).toDouble(),
+					query.value(query.record().indexOf(0)).toInt()
+				});
+		}
+	}
+}
+
+void TEST0136::selectedTableChangeSlot(int num)
 {
 	if (num < tablesNames.size() && num >= 0 && num != selectedTable)
 	{
