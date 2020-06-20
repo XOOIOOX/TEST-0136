@@ -27,22 +27,10 @@ QVariant TableModel::data(const QModelIndex& index, int role /*= Qt::DisplayRole
 	{
 		switch (index.column())
 		{
-			case 0:
-			{
-				return centralData.vectorSql[index.row()].date.toString("dd.MM.yyyy hh:mm:ss");
-			}
-
-			case 1:
-			{
-				return centralData.vectorSql[index.row()].value;
-			}
-			case 2:
-			{
-				return centralData.vectorSql[index.row()].group;
-			}
-
-			default:
-			{ return QVariant(); }
+			case 0: { return centralData.vectorSql[index.row()].date.toString("dd.MM.yyyy hh:mm:ss"); }
+			case 1: { return centralData.vectorSql[index.row()].value; }
+			case 2: { return centralData.vectorSql[index.row()].group; }
+			default: { return QVariant(); }
 		}
 	}
 	else { return QVariant(); }
@@ -54,25 +42,10 @@ bool TableModel::setData(const QModelIndex& index, const QVariant& value, int ro
 	{
 		switch (index.column())
 		{
-			case 0:
-			{
-				centralData.vectorSql[index.row()].date = value.value<QDateTime>();
-				break;
-			}
-
-			case 1:
-			{
-				centralData.vectorSql[index.row()].value = value.value<double>();
-				break;
-			}
-			case 2:
-			{
-				centralData.vectorSql[index.row()].group = value.value<int>();;
-				break;
-			}
-
-			default:
-			{ return false; }
+			case 0: { centralData.vectorSql[index.row()].date = value.value<QDateTime>(); break; }
+			case 1: { centralData.vectorSql[index.row()].value = value.value<double>(); break; }
+			case 2: { centralData.vectorSql[index.row()].group = value.value<int>();; break; }
+			default: { return false; }
 		}
 
 		emit dataChanged(index, index);
@@ -89,28 +62,13 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
 	{
 		switch (section)
 		{
-			case 0:
-			{
-				return QString("Дата");
-			}
-
-			case 1:
-			{
-				return QString("Значение");
-			}
-			case 2:
-			{
-				return QString("Группа");
-			}
-
-			default:
-			{ return QVariant(); }
+			case 0: { return QString("Дата"); }
+			case 1: { return QString("Значение"); }
+			case 2: { return QString("Группа"); }
+			default: { return QVariant(); }
 		}
 	}
-	else
-	{
-		return QString::number(section);
-	}
+	else { return QString::number(section); }
 }
 
 Qt::ItemFlags TableModel::flags(const QModelIndex& index) const
@@ -121,18 +79,12 @@ Qt::ItemFlags TableModel::flags(const QModelIndex& index) const
 
 bool TableModel::insertRows(int row, int count, const QModelIndex& parent /*= QModelIndex()*/)
 {
-	Q_UNUSED(row)
-		Q_UNUSED(count)
-		Q_UNUSED(parent)
-		return false;
+	Q_UNUSED(row) Q_UNUSED(count) Q_UNUSED(parent) return false;
 }
 
 bool TableModel::removeRows(int row, int count, const QModelIndex& parent /*= QModelIndex()*/)
 {
-	Q_UNUSED(row)
-		Q_UNUSED(count)
-		Q_UNUSED(parent)
-		return false;
+	Q_UNUSED(row) Q_UNUSED(count) Q_UNUSED(parent) return false;
 }
 
 void TableModel::update()

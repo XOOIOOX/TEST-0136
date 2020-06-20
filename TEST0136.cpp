@@ -17,7 +17,6 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 	tableView->setModel(tableModel);
 	tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-
 	selectedTableLoad();
 	tableView->show();
 }
@@ -70,9 +69,7 @@ void TEST0136::selectedGroupLoad()
 	if (selectedGroup != BadIndex)
 	{
 		centralData.vectorSql.clear();
-
 		QSqlQuery query("SELECT * FROM " + tablesList[selectedTable] + " WHERE Number=" + QString::number(*std::next(groupsList.begin(), selectedGroup)));
-
 		while (query.next())
 		{
 			centralData.vectorSql.push_back(

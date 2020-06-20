@@ -20,18 +20,18 @@ private:
 	QTableView* tableView;									// вьюшка таблицы
 	CentralDataStruct centralData;							// общие данные
 	TableModel* tableModel;									// модель таблицы
-	QItemSelectionModel selectionModel;
+	QItemSelectionModel selectionModel;						// модель выбора
 	QSqlDatabase dbase;										// текущая БД
 	QStringList tablesList;									// список таблиц
 	int selectedTable{ 0 };									// номер выбранной таблицы
 	int selectedGroup{ BadIndex };							// номер выбранной группы
-	ListInt groupsList;
+	ListInt groupsList;										// список всех групп
 
 	void selectedTableLoad();								// загрузка таблицы по номеру выбранной
-	void readGroups();
-	void selectedGroupLoad();
-	void groupSelectSpinSetup();
-	void tableSelectSpinSetup();
+	void readGroups();										// чтение групп
+	void selectedGroupLoad();								// чтение выбранной группы
+	void groupSelectSpinSetup();							// сетап спинбокса для выбора группы
+	void tableSelectSpinSetup();							// сетап спинбокса для выбора таблицы
 
 public slots:
 	void selectedTableChangeSlot(int num);					// слот смены выбранной таблицы
