@@ -3,6 +3,7 @@
 #include "QSqlTableModel"
 #include "QSqlQueryModel"
 #include "QStandardItemModel"
+#include <algorithm>
 
 TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 {
@@ -14,13 +15,18 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 
 	tablesNames = dbase.tables();
 	ui.tableSelectSpin->setRange(0, tablesNames.size() - 1);
+
 	connect(ui.tableSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedChangeSlot, Qt::DirectConnection);
+	connect(&selectionSql, &QItemSelectionModel::currentRowChanged, this, &TEST0136::currentIndexChangedSlot);
 
 	tableView = ui.tableView;
 	currentTableModel = new TableModel{ nullptr, centralData };
 	selectionSql.setModel(currentTableModel);
 	tableView->setModel(currentTableModel);
+	tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
 	tableLoad();
+	readGroups();
 	tableView->show();
 }
 
@@ -34,11 +40,29 @@ void TEST0136::tableLoad()
 	//tableModel->setHeaderData(2, Qt::Horizontal, tr("Группа"));
 }
 
+void TEST0136::readGroups()
+{
+	auto number = QString("Number");
+	QSqlQuery query("SELECT " + number + " " + "FROM " + tablesNames[selectedTable]);
+	while (query.next()) { groupsList.push_back(query.value(query.record().indexOf(number)).toInt()); }
+	groupsList.sort();
+	groupsList.unique();
+
+}
+
 void TEST0136::selectedChangeSlot(int num)
 {
 	if (num < tablesNames.size() && num >= 0 && num != selectedTable)
 	{
 		selectedTable = num;
 		tableLoad();
+	}
+}
+
+void TEST0136::currentIndexChangedSlot(const QModelIndex& current, const QModelIndex& previous)
+{
+	if (centralData.currentIndexSql != current.row())
+	{
+		centralData.currentIndexSql = current.row();
 	}
 }

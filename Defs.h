@@ -23,6 +23,7 @@ struct sqlRow
 };
 
 using VectorSql = std::vector<sqlRow>;
+using ListInt = std::list<int>;
 
 struct CentralDataStruct
 {
