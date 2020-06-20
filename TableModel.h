@@ -22,4 +22,5 @@ public:
 	bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex());
 	bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex());
 	void update();
+	void sortByDate();
 };

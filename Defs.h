@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include "QString"
 #include "QDateTime"
 
 #define BadIndex	-1
@@ -28,7 +27,6 @@ using ListInt = std::list<int>;
 struct CentralDataStruct
 {
 	VectorSql vectorSql;
-	int currentIndexSql{ BadIndex };
-
-	bool checkCurrentIndexSql() { return (currentIndexSql != BadIndex) && (!vectorSql.empty()); }
+	int currentIndex{ BadIndex };
+	bool checkCurrentIndex() { return (currentIndex != BadIndex) && (!vectorSql.empty()); }
 };

@@ -1,4 +1,5 @@
 #include "TableModel.h"
+#include <algorithm>
 
 TableModel::TableModel(QObject* parent, CentralDataStruct& input) : QAbstractTableModel(parent), centralData(input)
 {}
@@ -138,4 +139,10 @@ void TableModel::update()
 {
 	beginResetModel();
 	endResetModel();
+}
+
+void TableModel::sortByDate()
+{
+	std::sort(centralData.vectorSql.begin(), centralData.vectorSql.end(), [](auto first, auto second) { return first.date < second.date; });
+	update();
 }

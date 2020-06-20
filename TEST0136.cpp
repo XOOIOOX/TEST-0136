@@ -1,10 +1,5 @@
 #include "TEST0136.h"
 
-#include "QSqlTableModel"
-#include "QSqlQueryModel"
-#include "QStandardItemModel"
-#include <algorithm>
-
 TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 {
 	ui.setupUi(this);
@@ -87,6 +82,9 @@ void TEST0136::selectedGroupLoad()
 					query.value(query.record().indexOf("Number")).toInt()
 				});
 		}
+
+		tableModel->sortByDate();
+
 	}
 }
 
@@ -96,7 +94,7 @@ void TEST0136::selectedTableChangeSlot(int num)
 	{
 		selectedTable = num;
 		selectedTableLoad();
-		tableModel->update();
+		//tableModel->update();
 	}
 }
 
@@ -106,11 +104,11 @@ void TEST0136::selectedGroupChangeSlot(int num)
 	{
 		selectedGroup = num;
 		selectedGroupLoad();
-		tableModel->update();
+		//tableModel->update();
 	}
 }
 
 void TEST0136::currentIndexChangedSlot(const QModelIndex& current, const QModelIndex& previous)
 {
-	if (centralData.currentIndexSql != current.row()) { centralData.currentIndexSql = current.row(); }
+	if (centralData.currentIndex != current.row()) { centralData.currentIndex = current.row(); }
 }

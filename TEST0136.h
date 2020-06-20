@@ -1,13 +1,12 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
-#include "ui_TEST0136.h"
 #include <QtSql>
-#include <QSqlTableModel>
+#include <QSqlQuery>
 #include <QTableView>
+#include "ui_TEST0136.h"
 #include "Defs.h"
 #include "TableModel.h"
-#include "QSqlQuery"
 
 class TEST0136 : public QMainWindow
 {
