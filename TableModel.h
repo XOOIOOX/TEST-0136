@@ -21,5 +21,5 @@ public:
 	Qt::ItemFlags flags(const QModelIndex& index) const;
 	bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex());
 	bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex());
-
+	void update();
 };

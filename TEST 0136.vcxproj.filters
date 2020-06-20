@@ -15,9 +15,6 @@
     <Filter Include="Headers">
       <UniqueIdentifier>{8799b4a1-63fa-4bdc-96de-ab2f0d7d34cc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src">
-      <UniqueIdentifier>{009247ca-9033-412c-9faa-8f2c1e606f29}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Forms">
       <UniqueIdentifier>{edbd82a7-cc60-45bd-a2dd-3a41aa1d9ca6}</UniqueIdentifier>
     </Filter>

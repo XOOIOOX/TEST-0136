@@ -4,7 +4,7 @@
 #include "QSqlQueryModel"
 #include "QStandardItemModel"
 #include <algorithm>
-#include <xutility>
+#include <iostream>
 
 TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 {
@@ -15,11 +15,8 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 	if (QSqlDatabase::drivers().isEmpty()) { qDebug() << "no drivers"; }
 
 	tablesNames = dbase.tables();
-	ui.tableSelectSpin->setRange(0, tablesNames.size() - 1);
-
-	connect(ui.tableSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedTableChangeSlot, Qt::DirectConnection);
+	tableSelectSpinSetup();
 	connect(&selectionSql, &QItemSelectionModel::currentRowChanged, this, &TEST0136::currentIndexChangedSlot);
-
 
 	tableView = ui.tableView;
 	currentTableModel = new TableModel{ nullptr, centralData };
@@ -28,31 +25,39 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 	tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
 
-	tableLoad();
+	selectedTableLoad();
 	tableView->show();
 }
 
-void TEST0136::tableLoad()
+void TEST0136::selectedTableLoad()
 {
 	readGroups();
 	groupSelectSpinSetup();
-	readSelectedGroup();
+	selectedGroupLoad();
 }
 
 void TEST0136::groupSelectSpinSetup()
 {
 	if (!groupsList.empty())
 	{
+		disconnect(ui.groupSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedGroupChangeSlot);
 		ui.groupSelectSpin->setRange(0, groupsList.size() - 1);
 		ui.groupSelectSpin->setDisabled(false);
+		ui.groupSelectSpin->setValue(selectedGroup);
 		connect(ui.groupSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedGroupChangeSlot, Qt::DirectConnection);
 	}
 	else
 	{
+		disconnect(ui.groupSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedGroupChangeSlot);
 		ui.groupSelectSpin->setRange(0, 0);
 		ui.groupSelectSpin->setDisabled(true);
-		disconnect(ui.groupSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedGroupChangeSlot);
 	}
+}
+
+void TEST0136::tableSelectSpinSetup()
+{
+	ui.tableSelectSpin->setRange(0, tablesNames.size() - 1);
+	connect(ui.tableSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedTableChangeSlot, Qt::DirectConnection);
 }
 
 void TEST0136::readGroups()
@@ -67,11 +72,12 @@ void TEST0136::readGroups()
 	else { selectedGroup = BadIndex; }
 }
 
-void TEST0136::readSelectedGroup()
+void TEST0136::selectedGroupLoad()
 {
 	if (selectedGroup != BadIndex)
 	{
 		centralData.vectorSql.clear();
+
 		QSqlQuery query("SELECT * FROM " + tablesNames[selectedTable] + " WHERE Number=" + QString::number(*std::next(groupsList.begin(), selectedGroup)));
 
 		while (query.next())
@@ -83,6 +89,10 @@ void TEST0136::readSelectedGroup()
 					query.value(query.record().indexOf("Number")).toInt()
 				});
 		}
+
+		std::cout << "selected group: " << selectedGroup << std::endl;
+		std::cout << "cental data count: " << centralData.vectorSql.size() << std::endl;
+		std::cout << "current table: " << tablesNames[selectedTable].toStdString() << std::endl;
 	}
 }
 
@@ -91,8 +101,8 @@ void TEST0136::selectedTableChangeSlot(int num)
 	if (num != selectedTable)
 	{
 		selectedTable = num;
-		tableLoad();
-		tableView->update();
+		selectedTableLoad();
+		currentTableModel->update();
 	}
 }
 
@@ -101,8 +111,8 @@ void TEST0136::selectedGroupChangeSlot(int num)
 	if (num != selectedGroup)
 	{
 		selectedGroup = num;
-		readSelectedGroup();
-		tableView->update();
+		selectedGroupLoad();
+		currentTableModel->update();
 	}
 }
 

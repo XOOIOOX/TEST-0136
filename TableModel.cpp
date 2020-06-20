@@ -1,4 +1,5 @@
 #include "TableModel.h"
+#include <iostream>
 
 TableModel::TableModel(QObject* parent, CentralDataStruct& input) : QAbstractTableModel(parent), centralData(input)
 {}
@@ -132,4 +133,10 @@ bool TableModel::removeRows(int row, int count, const QModelIndex& parent /*= QM
 		Q_UNUSED(count)
 		Q_UNUSED(parent)
 		return false;
+}
+
+void TableModel::update()
+{
+	beginResetModel();
+	endResetModel();
 }

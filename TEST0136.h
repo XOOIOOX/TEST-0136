@@ -16,7 +16,6 @@ class TEST0136 : public QMainWindow
 public:
 	TEST0136(QWidget* parent = Q_NULLPTR);
 
-	void groupSelectSpinSetup();
 
 private:
 	Ui::TEST0136Class ui;
@@ -29,11 +28,12 @@ private:
 	int selectedTable{ 0 };								// номер выбранной таблицы
 	int selectedGroup{ BadIndex };						// номер выбранной группы
 	ListInt groupsList;
-	QSqlQuery dbQuery{ dbase };
 
-	void tableLoad();									// загрузка таблицы по номеру выбранной
+	void selectedTableLoad();									// загрузка таблицы по номеру выбранной
 	void readGroups();
-	void readSelectedGroup();
+	void selectedGroupLoad();
+	void groupSelectSpinSetup();
+	void tableSelectSpinSetup();
 
 public slots:
 	void selectedTableChangeSlot(int num);					// слот смены выбранной таблицы
