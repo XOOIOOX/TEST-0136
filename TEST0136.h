@@ -16,20 +16,19 @@ class TEST0136 : public QMainWindow
 public:
 	TEST0136(QWidget* parent = Q_NULLPTR);
 
-
 private:
 	Ui::TEST0136Class ui;
-	QTableView* tableView;								// вьюшка таблицы
-	CentralDataStruct centralData;						// общие данные
-	TableModel* currentTableModel;						// модель таблицы
-	QItemSelectionModel selectionSql;
-	QSqlDatabase dbase;									// текущая БД
-	QStringList tablesNames;							// список таблиц
-	int selectedTable{ 0 };								// номер выбранной таблицы
-	int selectedGroup{ BadIndex };						// номер выбранной группы
+	QTableView* tableView;									// вьюшка таблицы
+	CentralDataStruct centralData;							// общие данные
+	TableModel* tableModel;									// модель таблицы
+	QItemSelectionModel selectionModel;
+	QSqlDatabase dbase;										// текущая БД
+	QStringList tablesList;									// список таблиц
+	int selectedTable{ 0 };									// номер выбранной таблицы
+	int selectedGroup{ BadIndex };							// номер выбранной группы
 	ListInt groupsList;
 
-	void selectedTableLoad();									// загрузка таблицы по номеру выбранной
+	void selectedTableLoad();								// загрузка таблицы по номеру выбранной
 	void readGroups();
 	void selectedGroupLoad();
 	void groupSelectSpinSetup();

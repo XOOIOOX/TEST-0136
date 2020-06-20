@@ -4,7 +4,6 @@
 #include "QSqlQueryModel"
 #include "QStandardItemModel"
 #include <algorithm>
-#include <iostream>
 
 TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 {
@@ -12,16 +11,15 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 	dbase = QSqlDatabase::addDatabase("QSQLITE");
 	dbase.setDatabaseName("sample.db");
 	if (!dbase.open()) { qDebug() << "Cannot read db!"; }
-	if (QSqlDatabase::drivers().isEmpty()) { qDebug() << "no drivers"; }
+	if (QSqlDatabase::drivers().isEmpty()) { qDebug() << "No drivers !"; }
 
-	tablesNames = dbase.tables();
+	tablesList = dbase.tables();
 	tableSelectSpinSetup();
-	connect(&selectionSql, &QItemSelectionModel::currentRowChanged, this, &TEST0136::currentIndexChangedSlot);
-
+	connect(&selectionModel, &QItemSelectionModel::currentRowChanged, this, &TEST0136::currentIndexChangedSlot);
 	tableView = ui.tableView;
-	currentTableModel = new TableModel{ nullptr, centralData };
-	selectionSql.setModel(currentTableModel);
-	tableView->setModel(currentTableModel);
+	tableModel = new TableModel{ nullptr, centralData };
+	selectionModel.setModel(tableModel);
+	tableView->setModel(tableModel);
 	tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
 
@@ -56,14 +54,14 @@ void TEST0136::groupSelectSpinSetup()
 
 void TEST0136::tableSelectSpinSetup()
 {
-	ui.tableSelectSpin->setRange(0, tablesNames.size() - 1);
+	ui.tableSelectSpin->setRange(0, tablesList.size() - 1);
 	connect(ui.tableSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedTableChangeSlot, Qt::DirectConnection);
 }
 
 void TEST0136::readGroups()
 {
 	auto number = QString("Number");
-	QSqlQuery query("SELECT " + number + " " + "FROM " + tablesNames[selectedTable]);
+	QSqlQuery query("SELECT " + number + " FROM " + tablesList[selectedTable]);
 	groupsList.clear();
 	while (query.next()) { groupsList.push_back(query.value(query.record().indexOf(number)).toInt()); }
 	groupsList.sort();
@@ -78,7 +76,7 @@ void TEST0136::selectedGroupLoad()
 	{
 		centralData.vectorSql.clear();
 
-		QSqlQuery query("SELECT * FROM " + tablesNames[selectedTable] + " WHERE Number=" + QString::number(*std::next(groupsList.begin(), selectedGroup)));
+		QSqlQuery query("SELECT * FROM " + tablesList[selectedTable] + " WHERE Number=" + QString::number(*std::next(groupsList.begin(), selectedGroup)));
 
 		while (query.next())
 		{
@@ -89,10 +87,6 @@ void TEST0136::selectedGroupLoad()
 					query.value(query.record().indexOf("Number")).toInt()
 				});
 		}
-
-		std::cout << "selected group: " << selectedGroup << std::endl;
-		std::cout << "cental data count: " << centralData.vectorSql.size() << std::endl;
-		std::cout << "current table: " << tablesNames[selectedTable].toStdString() << std::endl;
 	}
 }
 
@@ -102,7 +96,7 @@ void TEST0136::selectedTableChangeSlot(int num)
 	{
 		selectedTable = num;
 		selectedTableLoad();
-		currentTableModel->update();
+		tableModel->update();
 	}
 }
 
@@ -112,14 +106,11 @@ void TEST0136::selectedGroupChangeSlot(int num)
 	{
 		selectedGroup = num;
 		selectedGroupLoad();
-		currentTableModel->update();
+		tableModel->update();
 	}
 }
 
 void TEST0136::currentIndexChangedSlot(const QModelIndex& current, const QModelIndex& previous)
 {
-	if (centralData.currentIndexSql != current.row())
-	{
-		centralData.currentIndexSql = current.row();
-	}
+	if (centralData.currentIndexSql != current.row()) { centralData.currentIndexSql = current.row(); }
 }

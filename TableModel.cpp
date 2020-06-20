@@ -1,5 +1,4 @@
 #include "TableModel.h"
-#include <iostream>
 
 TableModel::TableModel(QObject* parent, CentralDataStruct& input) : QAbstractTableModel(parent), centralData(input)
 {}
