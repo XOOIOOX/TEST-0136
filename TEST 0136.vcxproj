@@ -85,12 +85,13 @@
     <QtRcc Include="TEST0136.qrc" />
     <QtUic Include="TEST0136.ui" />
     <QtMoc Include="TEST0136.h" />
-    <ClCompile Include="DataItemDelegate.cpp" />
+    <ClCompile Include="TableModel.cpp" />
     <ClCompile Include="TEST0136.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="DataItemDelegate.h" />
+    <ClInclude Include="Defs.h" />
+    <QtMoc Include="TableModel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

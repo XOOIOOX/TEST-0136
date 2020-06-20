@@ -5,7 +5,8 @@
 #include <QtSql>
 #include <QSqlTableModel>
 #include <QTableView>
-#include "DataItemDelegate.h"
+#include "Defs.h"
+#include "TableModel.h"
 
 class TEST0136 : public QMainWindow
 {
@@ -17,11 +18,12 @@ public:
 private:
 	Ui::TEST0136Class ui;
 	QTableView* tableView;								// вьюшка таблицы
-	QSqlTableModel* tableModel;							// sql-ная табличная модель
+	CentralDataStruct centralData;
+	TableModel* currentTableModel;						// модель таблицы
+	QItemSelectionModel selectionSql;
 	QSqlDatabase dbase;									// текущая БД
 	QStringList tablesNames;							// список таблиц
 	int selectedTable{ 0 };								// номер выбранной таблицы
-	DataItemDelegate* itemDelegate;
 
 	void tableLoad();									// загрузка таблицы по номеру выбранной
 
