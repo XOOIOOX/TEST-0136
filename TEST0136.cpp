@@ -20,7 +20,6 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 	connect(ui.tableSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedTableChangeSlot, Qt::DirectConnection);
 	connect(&selectionSql, &QItemSelectionModel::currentRowChanged, this, &TEST0136::currentIndexChangedSlot);
 
-	tableLoad();
 
 	tableView = ui.tableView;
 	currentTableModel = new TableModel{ nullptr, centralData };
@@ -28,6 +27,8 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 	tableView->setModel(currentTableModel);
 	tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+
+	tableLoad();
 	tableView->show();
 }
 
@@ -44,13 +45,13 @@ void TEST0136::groupSelectSpinSetup()
 	{
 		ui.groupSelectSpin->setRange(0, groupsList.size() - 1);
 		ui.groupSelectSpin->setDisabled(false);
-		connect(ui.tableSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedGroupChangeSlot, Qt::DirectConnection);
+		connect(ui.groupSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedGroupChangeSlot, Qt::DirectConnection);
 	}
 	else
 	{
 		ui.groupSelectSpin->setRange(0, 0);
 		ui.groupSelectSpin->setDisabled(true);
-		disconnect(ui.tableSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedGroupChangeSlot);
+		disconnect(ui.groupSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedGroupChangeSlot);
 	}
 }
 
@@ -64,15 +65,6 @@ void TEST0136::readGroups()
 	groupsList.unique();
 	if (!groupsList.empty()) { selectedGroup = groupsList.front(); }
 	else { selectedGroup = BadIndex; }
-}
-
-void TEST0136::selectedGroupChangeSlot(int num)
-{
-	if (num != selectedGroup)
-	{
-		selectedGroup = num;
-		readSelectedGroup();
-	}
 }
 
 void TEST0136::readSelectedGroup()
@@ -96,10 +88,21 @@ void TEST0136::readSelectedGroup()
 
 void TEST0136::selectedTableChangeSlot(int num)
 {
-	if (num < tablesNames.size() && num >= 0 && num != selectedTable)
+	if (num != selectedTable)
 	{
 		selectedTable = num;
 		tableLoad();
+		tableView->update();
+	}
+}
+
+void TEST0136::selectedGroupChangeSlot(int num)
+{
+	if (num != selectedGroup)
+	{
+		selectedGroup = num;
+		readSelectedGroup();
+		tableView->update();
 	}
 }
 
