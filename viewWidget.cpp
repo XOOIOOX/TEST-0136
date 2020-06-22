@@ -69,28 +69,35 @@ void viewWidget::eventPaint()
 
 	for (size_t i = 0; i < centralData.vectorSql.size(); ++i)
 	{
+		QPointF point;
+
 		switch (viewType)
 		{
 			case ViewType::Horizontal:
 			{
-				poly << QPointF{ ((double)i / centralData.vectorSql.size()) * (width() - border * 2.0) + border,
+				point = { ((double)i / centralData.vectorSql.size()) * (width() - border * 2.0) + border,
 					((-centralData.vectorSql[i].value + rangeValue / 2.0) / rangeValue) * (height() - border * 2.0) + border };
 				break;
 			}
 			case ViewType::Vertical:
 			{
-				poly << QPointF{ ((centralData.vectorSql[i].value + rangeValue / 2.0) / rangeValue) * (width() - border * 2.0) + border,
+				point = { ((centralData.vectorSql[i].value + rangeValue / 2.0) / rangeValue) * (width() - border * 2.0) + border,
 					((double)i / centralData.vectorSql.size()) * (height() - border * 2.0) + border };
+
 				break;
 			}
 			case ViewType::Column: { break; }
 			default: { break; }
 		}
+
+		if (centralData.vectorSql[i].value == maxValue) { maxPoint = point; };
+		if (centralData.vectorSql[i].value == maxValue) { minPoint = point; };
+		poly << point;
 	}
 
 	poly << lastPointPoly;
 
-	painter.setPen(QPen(QColor(ColorBlue), 1.5, Qt::SolidLine, Qt::RoundCap));
+	painter.setPen(QPen(QColor(ColorBlue), 1.0, Qt::SolidLine, Qt::RoundCap));
 	painter.setBrush(QBrush(QColor(ColorBlueTransp), Qt::SolidPattern));
 	painter.drawPolygon(poly);
 

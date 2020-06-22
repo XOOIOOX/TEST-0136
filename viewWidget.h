@@ -20,6 +20,8 @@ private:
 	double maxValue{ 0.0 };								// максимальное значение в выборке
 	double rangeValue{ 0.0 };							// диапазон значений выборки
 	double border{ ViewBorder };						// бордюр
+	QPointF maxPoint{ 0.0, 0.0 };						// максимальная точка на графике
+	QPointF minPoint{ 0.0, 0.0 };						// минимальная точка на графике
 
 	void eventPaint();									// метод отрисовки
 
