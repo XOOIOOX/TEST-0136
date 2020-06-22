@@ -4,7 +4,7 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 {
 	ui.setupUi(this);
 	dbase = QSqlDatabase::addDatabase("QSQLITE");
-	dbase.setDatabaseName("sample.db");
+	dbase.setDatabaseName("./sample.db");
 	if (!dbase.open()) { qDebug() << "Cannot read db!"; }
 	if (QSqlDatabase::drivers().isEmpty()) { qDebug() << "No drivers !"; }
 
