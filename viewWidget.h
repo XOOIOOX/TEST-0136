@@ -14,8 +14,7 @@ public:
 	bool eventFilter(QObject* obj, QEvent* evt);
 private:
 	CentralDataStruct& centralData;
-	ViewType viewType{ ViewType::Horizontal };
-	//QPainter* painter;
+	ViewType viewType{ ViewType::Vertical };
 	double minValue{ 0.0 };
 	double maxValue{ 0.0 };
 	double rangeValue{ 0.0 };

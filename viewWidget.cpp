@@ -63,7 +63,7 @@ void viewWidget::horizontalGraph()
 	QPolygonF line;
 	for (size_t i = 0; i < centralData.vectorSql.size(); ++i)
 	{
-		line << QPointF{ (double)i / centralData.vectorSql.size() * size().width(), (-centralData.vectorSql[i].value + rangeValue / 2.0) / rangeValue * size().height()  };
+		line << QPointF{ (double)i / centralData.vectorSql.size() * size().width(), (-centralData.vectorSql[i].value + rangeValue / 2.0) / rangeValue * size().height() };
 	}
 
 	QPainter painter(this);
@@ -75,7 +75,17 @@ void viewWidget::horizontalGraph()
 
 void viewWidget::vetricalGraph()
 {
-	rangeWidget = size().width();
+	QPolygonF line;
+	for (size_t i = 0; i < centralData.vectorSql.size(); ++i)
+	{
+		line << QPointF{  (centralData.vectorSql[i].value + rangeValue / 2.0) / rangeValue * size().width() , (double)i / centralData.vectorSql.size() * size().height() };
+	}
+
+	QPainter painter(this);
+	painter.setRenderHints(QPainter::Antialiasing);
+	painter.setPen(QPen(QColor(43, 181, 255), 2, Qt::SolidLine, Qt::SquareCap));
+	painter.setBrush(QBrush(QColor(43, 181, 255), Qt::SolidPattern));
+	painter.drawPolyline(line);
 }
 
 void viewWidget::columnlGraph()
