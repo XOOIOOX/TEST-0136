@@ -38,9 +38,9 @@ private:
 public slots:
 	void selectedTableChangeSlot(int num);					// слот смены выбранной таблицы
 	void selectedGroupChangeSlot(int num);					// слот смены выбранной группы
+	void setViewHorizontalSlot();							// слот для горизонтального отображения
+	void setViewVerticalSlot();								// слот для вертикального отображения
+	void setViewColumnlSlot();								// слот для отображения столбцами
 	void currentIndexChangedSlot(const QModelIndex& current, const QModelIndex& previous);
-	void setViewHorizontalSlot();
-	void setViewVerticalSlot();
-	void setViewColumnlSlot();
 
 };

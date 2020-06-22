@@ -20,19 +20,11 @@ bool viewWidget::eventFilter(QObject* obj, QEvent* evt)
 	{
 		switch (evt->type())
 		{
-			case QEvent::Paint:
-			{
-				eventPaint();
-				return true;
-			}
-			default:
-			{ return false; }
+			case QEvent::Paint: { eventPaint(); return true; }
+			default: { return false; }
 		}
 	}
-	else
-	{
-		return true;
-	}
+	else { return false; }
 }
 
 void viewWidget::eventPaint()
