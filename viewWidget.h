@@ -1,6 +1,7 @@
 #pragma once
 #include "Defs.h"
 #include <QWidget>
+#include <QPainter>
 
 class viewWidget : public QWidget
 {
@@ -14,6 +15,7 @@ public:
 private:
 	CentralDataStruct& centralData;
 	ViewType viewType{ ViewType::Horizontal };
+	QPainter* painter;
 
 	void eventPaint();
 	void horizontalGraph();
