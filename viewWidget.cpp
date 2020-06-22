@@ -9,7 +9,6 @@ viewWidget::viewWidget(CentralDataStruct& centralData, QWidget* parent) : QWidge
 {
 	installEventFilter(this);
 	resize(parent->size());
-	//painter = new QPainter(this);
 }
 
 viewWidget::~viewWidget()
@@ -46,50 +45,37 @@ void viewWidget::eventPaint()
 	cout << "min: " << minValue << endl;
 	cout << "max: " << maxValue << endl;
 	cout << "input range: " << rangeValue << endl;
-	//rangeValue = maxValue - minValue;
 
-	switch (viewType)
-	{
-		case ViewType::Horizontal: { horizontalGraph(); break; }
-		case ViewType::Vertical: { vetricalGraph(); break; }
-		case ViewType::Column: { columnlGraph(); break; }
-		default:
-		{ break; }
-	}
-}
-
-void viewWidget::horizontalGraph()
-{
 	QPolygonF line;
 	for (size_t i = 0; i < centralData.vectorSql.size(); ++i)
 	{
-		line << QPointF{ (double)i / centralData.vectorSql.size() * size().width(), (-centralData.vectorSql[i].value + rangeValue / 2.0) / rangeValue * size().height() };
+		switch (viewType)
+		{
+			case ViewType::Horizontal:
+			{
+				line << QPointF{ (double)i / centralData.vectorSql.size() * (width() - border * 2.0),
+					(-centralData.vectorSql[i].value + rangeValue / 2.0) / rangeValue * (height() - border * 2.0) };
+				break;
+			}
+			case ViewType::Vertical:
+			{
+				line << QPointF{ (centralData.vectorSql[i].value + rangeValue / 2.0) / rangeValue * (width() - border * 2.0),
+					(double)i / centralData.vectorSql.size() * (height() - border * 2.0) };
+				break;
+			}
+			case ViewType::Column: { break; }
+			default: { break; }
+		}
 	}
 
 	QPainter painter(this);
 	painter.setRenderHints(QPainter::Antialiasing);
-	painter.setPen(QPen(QColor(43, 181, 255), 2, Qt::SolidLine, Qt::SquareCap));
+	painter.setPen(QPen(QColor(255, 137, 27), 2, Qt::SolidLine, Qt::RoundCap));
+	painter.drawLine(QPointF{ border, height() / 2.0 + border }, QPointF{ width() - border, height() / 2.0 + border });
+	painter.setPen(QPen(QColor(43, 181, 255), 2, Qt::SolidLine, Qt::RoundCap));
 	painter.setBrush(QBrush(QColor(43, 181, 255), Qt::SolidPattern));
 	painter.drawPolyline(line);
 }
-
-void viewWidget::vetricalGraph()
-{
-	QPolygonF line;
-	for (size_t i = 0; i < centralData.vectorSql.size(); ++i)
-	{
-		line << QPointF{  (centralData.vectorSql[i].value + rangeValue / 2.0) / rangeValue * size().width() , (double)i / centralData.vectorSql.size() * size().height() };
-	}
-
-	QPainter painter(this);
-	painter.setRenderHints(QPainter::Antialiasing);
-	painter.setPen(QPen(QColor(43, 181, 255), 2, Qt::SolidLine, Qt::SquareCap));
-	painter.setBrush(QBrush(QColor(43, 181, 255), Qt::SolidPattern));
-	painter.drawPolyline(line);
-}
-
-void viewWidget::columnlGraph()
-{}
 
 void viewWidget::changeViewTypeSlot(ViewType type)
 {

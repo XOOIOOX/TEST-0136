@@ -14,16 +14,14 @@ public:
 	bool eventFilter(QObject* obj, QEvent* evt);
 private:
 	CentralDataStruct& centralData;
-	ViewType viewType{ ViewType::Vertical };
+	ViewType viewType{ ViewType::Horizontal };
 	double minValue{ 0.0 };
 	double maxValue{ 0.0 };
 	double rangeValue{ 0.0 };
 	double rangeWidget{ 0.0 };
+	double border{ 5.0 };
 
 	void eventPaint();
-	void horizontalGraph();
-	void vetricalGraph();
-	void columnlGraph();
 
 public slots:
 	void changeViewTypeSlot(ViewType type);
