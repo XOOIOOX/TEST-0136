@@ -16,8 +16,7 @@ using uint64 = uint64_t;
 
 #define ColorOrange				255, 137, 27, 255			// оранжевый
 #define ColorBlue				43, 181, 255				// синий
-#define ColorBlueTransp			43, 181, 255, 125			// синий прозрачный
-
+#define ColorBlueTransp			43, 181, 255, 95			// синий прозрачный
 #define ViewBorder				20							// бордюр для отображения графического представления
 
 enum class ViewType { Horizontal, Vertical, Column };
