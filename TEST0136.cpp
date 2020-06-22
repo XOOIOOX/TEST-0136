@@ -8,6 +8,8 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 	if (!dbase.open()) { qDebug() << "Cannot read db!"; }
 	if (QSqlDatabase::drivers().isEmpty()) { qDebug() << "No drivers !"; }
 
+	view = new viewWidget(centralData, ui.view);
+
 	tablesList = dbase.tables();
 	tableSelectSpinSetup();
 	connect(&selectionModel, &QItemSelectionModel::currentRowChanged, this, &TEST0136::currentIndexChangedSlot);

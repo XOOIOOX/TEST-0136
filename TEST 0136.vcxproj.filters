@@ -10,6 +10,9 @@
     <ClCompile Include="TableModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="viewWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
@@ -47,6 +50,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="TableModel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="viewWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

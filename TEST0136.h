@@ -7,6 +7,7 @@
 #include "ui_TEST0136.h"
 #include "Defs.h"
 #include "TableModel.h"
+#include "viewWidget.h"
 
 class TEST0136 : public QMainWindow
 {
@@ -26,6 +27,7 @@ private:
 	int selectedTable{ 0 };									// номер выбранной таблицы
 	int selectedGroup{ BadIndex };							// номер выбранной группы
 	ListInt groupsList;										// список всех групп
+	viewWidget* view;										// вьюшка
 
 	void selectedTableLoad();								// загрузка таблицы по номеру выбранной
 	void readGroups();										// чтение групп

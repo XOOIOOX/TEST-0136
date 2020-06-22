@@ -82,6 +82,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="viewWidget.cpp" />
     <QtRcc Include="TEST0136.qrc" />
     <QtUic Include="TEST0136.ui" />
     <QtMoc Include="TEST0136.h" />
@@ -91,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defs.h" />
+    <QtMoc Include="viewWidget.h" />
     <QtMoc Include="TableModel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
