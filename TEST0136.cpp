@@ -83,6 +83,7 @@ void TEST0136::selectedGroupLoad()
 		}
 
 		tableModel->sortByDate();
+		tableView->scrollToTop();
 		view->update();
 	}
 }
