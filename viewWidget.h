@@ -19,7 +19,7 @@ private:
 	double maxValue{ 0.0 };
 	double rangeValue{ 0.0 };
 	double rangeWidget{ 0.0 };
-	double border{ 5.0 };
+	double border{ 10.0 };
 
 	void eventPaint();
 
