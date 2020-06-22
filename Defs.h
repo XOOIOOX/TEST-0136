@@ -18,6 +18,8 @@ using uint64 = uint64_t;
 #define ColorBlue				43, 181, 255				// синий
 #define ColorBlueTransp			43, 181, 255, 125			// синий прозрачный
 
+#define ViewBorder				20							// бордюр для отображения графического представления
+
 enum class ViewType { Horizontal, Vertical, Column };
 
 struct sqlRow

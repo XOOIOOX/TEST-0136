@@ -40,39 +40,40 @@ void viewWidget::eventPaint()
 	auto pair = std::minmax_element(centralData.vectorSql.begin(), centralData.vectorSql.end(), [](auto prev, auto next) { return prev.value < next.value; });
 	minValue = (*pair.first).value;
 	maxValue = (*pair.second).value;
-
 	rangeValue = std::fabs(minValue) < std::fabs(maxValue) ? std::fabs(maxValue) * 2.0 : std::fabs(minValue) * 2.0;
-	cout << "min: " << minValue << endl;
-	cout << "max: " << maxValue << endl;
-	cout << "input range: " << rangeValue << endl;
 
-	QPointF firstPoint, lastPoint;
+	QPainter painter(this);
+
+	painter.setRenderHints(QPainter::Antialiasing);
+	painter.setPen(QPen(QColor(ColorOrange), 2.0, Qt::SolidLine, Qt::RoundCap));
+	painter.drawRect(rect());
+
+	QPointF firstPointPoly, lastPointPoly, firstPointLine, lastPointLine;
 
 	switch (viewType)
 	{
 		case ViewType::Horizontal:
 		{
-			firstPoint = { border, height() / 2.0 };
-			lastPoint = { width() - border, height() / 2.0 };
-
+			firstPointPoly = { border, height() / 2.0 };
+			lastPointPoly = { width() - border, height() / 2.0 };
+			firstPointLine = firstPointPoly - QPointF{ border / 2.0, 0.0 };
+			lastPointLine = lastPointPoly + QPointF{ border / 2.0, 0.0 };
 			break;
 		}
 		case ViewType::Vertical:
 		{
-			firstPoint = { width() / 2.0, border };
-			lastPoint = { width() / 2.0, height() - border };
-
+			firstPointPoly = { width() / 2.0, border };
+			lastPointPoly = { width() / 2.0, height() - border };
+			firstPointLine = firstPointPoly - QPointF{ 0.0, border / 2.0 };
+			lastPointLine = lastPointPoly + QPointF{ 0.0, border / 2.0 };
 			break;
 		}
-		case ViewType::Column:
-		{ break; }
-		default:
-		{ break; }
+		case ViewType::Column: { break; }
+		default: { break; }
 	}
 
 	QPolygonF poly;
-
-	poly << firstPoint;
+	poly << firstPointPoly;
 
 	for (size_t i = 0; i < centralData.vectorSql.size(); ++i)
 	{
@@ -94,22 +95,16 @@ void viewWidget::eventPaint()
 			default: { break; }
 		}
 	}
-	poly << lastPoint;
 
-	QPainter painter(this);
-	
-	painter.setRenderHints(QPainter::Antialiasing);
-	painter.setPen(QPen(QColor(ColorOrange), 1, Qt::SolidLine, Qt::RoundCap));
-	painter.drawRect(rect());
+	poly << lastPointPoly;
 
-	painter.setPen(QPen(QColor(ColorBlue), 1, Qt::SolidLine, Qt::RoundCap));
+	painter.setPen(QPen(QColor(ColorBlue), 1.5, Qt::SolidLine, Qt::RoundCap));
 	painter.setBrush(QBrush(QColor(ColorBlueTransp), Qt::SolidPattern));
 	painter.drawPolygon(poly);
 
-	painter.setPen(QPen(QColor(ColorOrange), 1, Qt::SolidLine, Qt::RoundCap));
+	painter.setPen(QPen(QColor(ColorOrange), 1.0, Qt::SolidLine, Qt::RoundCap));
 	painter.setBrush(QBrush(Qt::NoBrush));
-
-	painter.drawLine(firstPoint, lastPoint);
+	painter.drawLine(firstPointLine, lastPointLine);
 }
 
 void viewWidget::changeViewTypeSlot(ViewType type)
