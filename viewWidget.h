@@ -15,7 +15,11 @@ public:
 private:
 	CentralDataStruct& centralData;
 	ViewType viewType{ ViewType::Horizontal };
-	QPainter* painter;
+	//QPainter* painter;
+	double minValue{ 0.0 };
+	double maxValue{ 0.0 };
+	double rangeValue{ 0.0 };
+	double rangeWidget{ 0.0 };
 
 	void eventPaint();
 	void horizontalGraph();

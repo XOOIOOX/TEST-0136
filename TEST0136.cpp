@@ -83,6 +83,7 @@ void TEST0136::selectedGroupLoad()
 		}
 
 		tableModel->sortByDate();
+		view->update();
 	}
 }
 
