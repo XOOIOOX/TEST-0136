@@ -15,8 +15,8 @@ using uint32 = uint32_t;
 using uint64 = uint64_t;
 
 #define ColorOrange				255, 137, 27, 255			// оранжевый
-#define ColorBlue				43, 181, 255			// синий
-#define ColorBlueTransp			43, 181, 255, 125		// синий прозрачный
+#define ColorBlue				43, 181, 255				// синий
+#define ColorBlueTransp			43, 181, 255, 125			// синий прозрачный
 
 enum class ViewType { Horizontal, Vertical, Column };
 

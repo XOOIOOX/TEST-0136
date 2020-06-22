@@ -9,7 +9,6 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 	if (QSqlDatabase::drivers().isEmpty()) { qDebug() << "No drivers !"; }
 
 	view = new viewWidget(centralData, ui.view);
-
 	tablesList = dbase.tables();
 	tableSelectSpinSetup();
 	connect(&selectionModel, &QItemSelectionModel::currentRowChanged, this, &TEST0136::currentIndexChangedSlot);
@@ -19,8 +18,12 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 	tableView->setModel(tableModel);
 	tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+	tableView->verticalHeader()->hide();
 	selectedTableLoad();
 	tableView->show();
+	connect(ui.horizontalButton, &QPushButton::clicked, this, &TEST0136::setViewHorizontalSlot);
+	connect(ui.verticalButton, &QPushButton::clicked, this, &TEST0136::setViewVerticalSlot);
+	connect(ui.columnButton, &QPushButton::clicked, this, &TEST0136::setViewColumnlSlot);
 }
 
 void TEST0136::selectedTableLoad()
@@ -110,3 +113,7 @@ void TEST0136::currentIndexChangedSlot(const QModelIndex& current, const QModelI
 {
 	if (centralData.currentIndex != current.row()) { centralData.currentIndex = current.row(); }
 }
+
+void TEST0136::setViewHorizontalSlot() { view->changeViewTypeSlot(ViewType::Horizontal); }
+void TEST0136::setViewVerticalSlot() { view->changeViewTypeSlot(ViewType::Vertical); }
+void TEST0136::setViewColumnlSlot() { view->changeViewTypeSlot(ViewType::Column); }
