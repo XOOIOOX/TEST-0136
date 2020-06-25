@@ -28,7 +28,7 @@ private:
 	int selectedGroup{ BadIndex };							// номер выбранной группы
 	ListInt groupsList;										// список всех групп
 	viewWidget* view;										// вьюшка
-	int filterSize{ 11 };									// размер фильтра
+	int filterSize{ 7 };									// размер фильтра
 
 	void selectedTableLoad();								// загрузка таблицы по номеру выбранной
 	void readGroups();										// чтение групп

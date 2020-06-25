@@ -61,7 +61,7 @@ void TEST0136::tableSelectSpinSetup()
 void TEST0136::smoothValues()
 {
 	VectorDouble lod(filterSize);																			// НЧ-фильтр
-	double sigma = 10.0;
+	double sigma = 2.0;
 	auto filerSizeHalf = (filterSize - 1) / 2;
 
 	for (int i = 0; i < lod.size(); ++i)
