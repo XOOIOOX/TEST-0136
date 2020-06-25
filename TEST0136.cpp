@@ -70,8 +70,6 @@ void TEST0136::smoothValues()
 		lod[i] = exp(-(r2 / (2.0 * sigma * sigma)));
 	}
 
-	auto sum = std::accumulate(lod.begin(), lod.end(), 0.0);
-	for (auto& i : lod) { i /= sum; }																		// нормализация фильтра
 	VectorDouble mirror(centralData.vectorSql.size() + filerSizeHalf * 2);
 
 	for (int i = 0; i < mirror.size(); ++i)
