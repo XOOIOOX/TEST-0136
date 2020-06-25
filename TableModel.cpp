@@ -27,7 +27,7 @@ QVariant TableModel::data(const QModelIndex& index, int role /*= Qt::DisplayRole
 	{
 		switch (index.column())
 		{
-			case 0: { return centralData.vectorSql[index.row()].date.toString("dd.MM.yyyy hh:mm:ss"); }
+			case 0: { return centralData.vectorSql[index.row()].date.toString("    dd.MM.yyyy hh:mm:ss    "); }
 			case 1: { return centralData.vectorSql[index.row()].value; }
 			case 2: { return centralData.vectorSql[index.row()].group; }
 			default: { return QVariant(); }
