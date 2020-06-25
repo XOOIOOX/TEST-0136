@@ -16,7 +16,7 @@ viewWidget::~viewWidget()
 
 bool viewWidget::eventFilter(QObject* obj, QEvent* evt)
 {
-	if (!centralData.vectorSql.empty() && obj == this)
+	if (!centralData.vectorView.empty() && obj == this)
 	{
 		switch (evt->type())
 		{
@@ -29,9 +29,9 @@ bool viewWidget::eventFilter(QObject* obj, QEvent* evt)
 
 void viewWidget::eventPaint()
 {
-	auto pair = std::minmax_element(centralData.vectorSql.begin(), centralData.vectorSql.end(), [](auto prev, auto next) { return prev.value < next.value; });
-	minValue = (*pair.first).value;
-	maxValue = (*pair.second).value;
+	auto pair = std::minmax_element(centralData.vectorView.begin(), centralData.vectorView.end(), [](auto prev, auto next) { return prev < next; });
+	minValue = (*pair.first);
+	maxValue = (*pair.second);
 	rangeValue = std::fabs(minValue) < std::fabs(maxValue) ? std::fabs(maxValue) * 2.0 : std::fabs(minValue) * 2.0;
 
 	QPainter painter(this);
@@ -67,7 +67,7 @@ void viewWidget::eventPaint()
 	QPolygonF poly;
 	poly << firstPointPoly;
 
-	for (size_t i = 0; i < centralData.vectorSql.size(); ++i)
+	for (size_t i = 0; i < centralData.vectorView.size(); ++i)
 	{
 		QPointF point;
 
@@ -75,14 +75,14 @@ void viewWidget::eventPaint()
 		{
 			case ViewType::Horizontal:
 			{
-				point = { ((double)i / centralData.vectorSql.size()) * (width() - border * 2.0) + border,
-					((-centralData.vectorSql[i].value + rangeValue / 2.0) / rangeValue) * (height() - border * 2.0) + border };
+				point = { ((double)i / centralData.vectorView.size()) * (width() - border * 2.0) + border,
+					((-centralData.vectorView[i] + rangeValue / 2.0) / rangeValue) * (height() - border * 2.0) + border };
 				break;
 			}
 			case ViewType::Vertical:
 			{
-				point = { ((centralData.vectorSql[i].value + rangeValue / 2.0) / rangeValue) * (width() - border * 2.0) + border,
-					((double)i / centralData.vectorSql.size()) * (height() - border * 2.0) + border };
+				point = { ((centralData.vectorView[i] + rangeValue / 2.0) / rangeValue) * (width() - border * 2.0) + border,
+					((double)i / centralData.vectorView.size()) * (height() - border * 2.0) + border };
 
 				break;
 			}
@@ -90,8 +90,8 @@ void viewWidget::eventPaint()
 			default: { break; }
 		}
 
-		if (centralData.vectorSql[i].value == maxValue) { maxPoint = point; };
-		if (centralData.vectorSql[i].value == maxValue) { minPoint = point; };
+		if (centralData.vectorView[i] == maxValue) { maxPoint = point; };
+		if (centralData.vectorView[i] == maxValue) { minPoint = point; };
 		poly << point;
 	}
 

@@ -28,12 +28,14 @@ private:
 	int selectedGroup{ BadIndex };							// номер выбранной группы
 	ListInt groupsList;										// список всех групп
 	viewWidget* view;										// вьюшка
+	int filterSize{ 11 };									// размер фильтра
 
 	void selectedTableLoad();								// загрузка таблицы по номеру выбранной
 	void readGroups();										// чтение групп
 	void selectedGroupLoad();								// чтение выбранной группы
 	void groupSelectSpinSetup();							// сетап спинбокса для выбора группы
 	void tableSelectSpinSetup();							// сетап спинбокса для выбора таблицы
+	void smoothValues();									// сглаживание данных
 
 public slots:
 	void selectedTableChangeSlot(int num);					// слот смены выбранной таблицы
