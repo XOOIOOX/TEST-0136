@@ -63,6 +63,7 @@ void TEST0136::smoothValues()
 	VectorDouble lod(filterSize);																			// НЧ-фильтр
 	double sigma = 2.0;
 	auto filerSizeHalf = (filterSize - 1) / 2;
+	centralData.vectorView.clear();
 
 	for (int i = 0; i < lod.size(); ++i)
 	{
@@ -80,7 +81,6 @@ void TEST0136::smoothValues()
 		mirror[i] = centralData.vectorSql[ptr].value;
 	}
 
-	centralData.vectorView.clear();
 	for (size_t i = 0; i < centralData.vectorSql.size(); ++i)
 	{
 		centralData.vectorView.push_back(std::inner_product(mirror.begin() + i, mirror.begin() + i + filterSize, lod.begin(), 0.0));
