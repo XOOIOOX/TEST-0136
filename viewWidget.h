@@ -22,9 +22,13 @@ private:
 	double border{ ViewBorder };						// бордюр
 	QPointF maxPoint{ 0.0, 0.0 };						// максимальная точка на графике
 	QPointF minPoint{ 0.0, 0.0 };						// минимальная точка на графике
+	VectorDouble vectorView;
+	int filterSize{ 7 };								// размер фильтра
 
 	void eventPaint();									// метод отрисовки
+	void prepareVectorView();							// подготовка верктора значений
 
 public slots:
 	void changeViewTypeSlot(ViewType type);				// слот смены типа отображения
+	void setFilterSizeSlot(int size);					// слот установки размера фильтра
 };

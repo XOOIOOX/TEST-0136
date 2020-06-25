@@ -35,7 +35,7 @@ using ListInt = std::list<int>;
 struct CentralDataStruct
 {
 	VectorSql vectorSql;
-	VectorDouble vectorView;
+	//VectorDouble vectorView;
 	int currentIndex{ BadIndex };
 	bool checkCurrentIndex() { return (currentIndex != BadIndex) && (!vectorSql.empty()); }
 };

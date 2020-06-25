@@ -58,34 +58,34 @@ void TEST0136::tableSelectSpinSetup()
 	connect(ui.tableSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedTableChangeSlot, Qt::DirectConnection);
 }
 
-void TEST0136::smoothValues()
-{
-	VectorDouble lod(filterSize);																			// НЧ-фильтр
-	double sigma = 2.0;
-	auto filerSizeHalf = (filterSize - 1) / 2;
-	centralData.vectorView.clear();
-
-	for (int i = 0; i < lod.size(); ++i)
-	{
-		auto r2 = (static_cast<double>(i - filerSizeHalf) * (i - filerSizeHalf));
-		lod[i] = exp(-(r2 / (2.0 * sigma * sigma)));
-	}
-
-	VectorDouble mirror(centralData.vectorSql.size() + filerSizeHalf * 2);
-
-	for (int i = 0; i < mirror.size(); ++i)
-	{
-		auto ptr = i - filerSizeHalf;
-		if (ptr < 0) { ptr = abs(ptr) - 1; }
-		if (ptr > centralData.vectorSql.size() - 1) { ptr = centralData.vectorSql.size() - (ptr - centralData.vectorSql.size()) - 1; }
-		mirror[i] = centralData.vectorSql[ptr].value;
-	}
-
-	for (size_t i = 0; i < centralData.vectorSql.size(); ++i)
-	{
-		centralData.vectorView.push_back(std::inner_product(mirror.begin() + i, mirror.begin() + i + filterSize, lod.begin(), 0.0));
-	}
-}
+//void TEST0136::smoothValues()
+//{
+//	VectorDouble lod(filterSize);																			// НЧ-фильтр
+//	double sigma = 2.0;
+//	auto filerSizeHalf = (filterSize - 1) / 2;
+//	centralData.vectorView.clear();
+//
+//	for (int i = 0; i < lod.size(); ++i)
+//	{
+//		auto r2 = (static_cast<double>(i - filerSizeHalf) * (i - filerSizeHalf));
+//		lod[i] = exp(-(r2 / (2.0 * sigma * sigma)));
+//	}
+//
+//	VectorDouble mirror(centralData.vectorSql.size() + filerSizeHalf * 2);
+//
+//	for (int i = 0; i < mirror.size(); ++i)
+//	{
+//		auto ptr = i - filerSizeHalf;
+//		if (ptr < 0) { ptr = abs(ptr) - 1; }
+//		if (ptr > centralData.vectorSql.size() - 1) { ptr = centralData.vectorSql.size() - (ptr - centralData.vectorSql.size()) - 1; }
+//		mirror[i] = centralData.vectorSql[ptr].value;
+//	}
+//
+//	for (size_t i = 0; i < centralData.vectorSql.size(); ++i)
+//	{
+//		centralData.vectorView.push_back(std::inner_product(mirror.begin() + i, mirror.begin() + i + filterSize, lod.begin(), 0.0));
+//	}
+//}
 
 void TEST0136::readGroups()
 {
@@ -117,7 +117,7 @@ void TEST0136::selectedGroupLoad()
 
 		tableModel->sortByDate();
 		tableView->scrollToTop();
-		smoothValues();
+		//smoothValues();
 		view->update();
 	}
 }

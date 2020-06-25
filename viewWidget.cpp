@@ -16,7 +16,7 @@ viewWidget::~viewWidget()
 
 bool viewWidget::eventFilter(QObject* obj, QEvent* evt)
 {
-	if (!centralData.vectorView.empty() && obj == this)
+	if (!centralData.vectorSql.empty() && obj == this)
 	{
 		switch (evt->type())
 		{
@@ -29,13 +29,8 @@ bool viewWidget::eventFilter(QObject* obj, QEvent* evt)
 
 void viewWidget::eventPaint()
 {
-	auto pair = std::minmax_element(centralData.vectorView.begin(), centralData.vectorView.end(), [](auto prev, auto next) { return prev < next; });
-	minValue = (*pair.first);
-	maxValue = (*pair.second);
-	rangeValue = std::fabs(minValue) < std::fabs(maxValue) ? std::fabs(maxValue) * 2.0 : std::fabs(minValue) * 2.0;
-
+	prepareVectorView();
 	QPainter painter(this);
-
 	painter.setRenderHints(QPainter::Antialiasing);
 	painter.setPen(QPen(QColor(ColorOrange), 2.0, Qt::SolidLine, Qt::RoundCap));
 	painter.drawRect(rect());
@@ -67,7 +62,7 @@ void viewWidget::eventPaint()
 	QPolygonF poly;
 	poly << firstPointPoly;
 
-	for (size_t i = 0; i < centralData.vectorView.size(); ++i)
+	for (size_t i = 0; i < vectorView.size(); ++i)
 	{
 		QPointF point;
 
@@ -75,14 +70,14 @@ void viewWidget::eventPaint()
 		{
 			case ViewType::Horizontal:
 			{
-				point = { ((double)i / centralData.vectorView.size()) * (width() - border * 2.0) + border,
-					((-centralData.vectorView[i] + rangeValue / 2.0) / rangeValue) * (height() - border * 2.0) + border };
+				point = { ((double)i / vectorView.size()) * (width() - border * 2.0) + border,
+					((-vectorView[i] + rangeValue / 2.0) / rangeValue) * (height() - border * 2.0) + border };
 				break;
 			}
 			case ViewType::Vertical:
 			{
-				point = { ((centralData.vectorView[i] + rangeValue / 2.0) / rangeValue) * (width() - border * 2.0) + border,
-					((double)i / centralData.vectorView.size()) * (height() - border * 2.0) + border };
+				point = { ((vectorView[i] + rangeValue / 2.0) / rangeValue) * (width() - border * 2.0) + border,
+					((double)i / vectorView.size()) * (height() - border * 2.0) + border };
 
 				break;
 			}
@@ -90,8 +85,8 @@ void viewWidget::eventPaint()
 			default: { break; }
 		}
 
-		if (centralData.vectorView[i] == maxValue) { maxPoint = point; };
-		if (centralData.vectorView[i] == maxValue) { minPoint = point; };
+		if (vectorView[i] == maxValue) { maxPoint = point; };
+		if (vectorView[i] == maxValue) { minPoint = point; };
 		poly << point;
 	}
 
@@ -106,8 +101,48 @@ void viewWidget::eventPaint()
 	painter.drawLine(firstPointLine, lastPointLine);
 }
 
+void viewWidget::prepareVectorView()
+{
+	VectorDouble lod(filterSize);																			// НЧ-фильтр
+	double sigma = 2.0;
+	auto filerSizeHalf = (filterSize - 1) / 2;
+	vectorView.clear();
+
+	for (int i = 0; i < lod.size(); ++i)
+	{
+		auto r2 = (static_cast<double>(i - filerSizeHalf) * (i - filerSizeHalf));
+		lod[i] = exp(-(r2 / (2.0 * sigma * sigma)));
+	}
+
+	VectorDouble mirror(centralData.vectorSql.size() + filerSizeHalf * 2);
+
+	for (int i = 0; i < mirror.size(); ++i)
+	{
+		auto ptr = i - filerSizeHalf;
+		if (ptr < 0) { ptr = abs(ptr) - 1; }
+		if (ptr > centralData.vectorSql.size() - 1) { ptr = centralData.vectorSql.size() - (ptr - centralData.vectorSql.size()) - 1; }
+		mirror[i] = centralData.vectorSql[ptr].value;
+	}
+
+	for (size_t i = 0; i < centralData.vectorSql.size(); ++i)
+	{
+		vectorView.push_back(std::inner_product(mirror.begin() + i, mirror.begin() + i + filterSize, lod.begin(), 0.0));
+	}
+
+	auto pair = std::minmax_element(vectorView.begin(), vectorView.end(), [](auto prev, auto next) { return prev < next; });
+	minValue = (*pair.first);
+	maxValue = (*pair.second);
+	rangeValue = std::fabs(minValue) < std::fabs(maxValue) ? std::fabs(maxValue) * 2.0 : std::fabs(minValue) * 2.0;
+}
+
 void viewWidget::changeViewTypeSlot(ViewType type)
 {
 	viewType = type;
+	update();
+}
+
+void viewWidget::setFilterSizeSlot(int size)
+{
+	filterSize = size;
 	update();
 }
