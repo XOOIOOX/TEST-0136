@@ -25,6 +25,10 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 	connect(ui.horizontalButton, &QPushButton::clicked, this, &TEST0136::setViewHorizontalSlot);
 	connect(ui.verticalButton, &QPushButton::clicked, this, &TEST0136::setViewVerticalSlot);
 	connect(ui.columnButton, &QPushButton::clicked, this, &TEST0136::setViewColumnlSlot);
+	connect(ui.smoothCheckbox, &QCheckBox::stateChanged, this, &TEST0136::smoothCheckboxSlot);
+	connect(ui.smoothLevelSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::smoothSpinboxSlot, Qt::DirectConnection);
+	ui.smoothCheckbox->setCheckState(Qt::Unchecked);
+	smoothCheckboxSlot(Qt::Unchecked);
 }
 
 void TEST0136::selectedTableLoad()
@@ -57,35 +61,6 @@ void TEST0136::tableSelectSpinSetup()
 	ui.tableSelectSpin->setRange(0, tablesList.size() - 1);
 	connect(ui.tableSelectSpin, qOverload<int>(&QSpinBox::valueChanged), this, &TEST0136::selectedTableChangeSlot, Qt::DirectConnection);
 }
-
-//void TEST0136::smoothValues()
-//{
-//	VectorDouble lod(filterSize);																			// НЧ-фильтр
-//	double sigma = 2.0;
-//	auto filerSizeHalf = (filterSize - 1) / 2;
-//	centralData.vectorView.clear();
-//
-//	for (int i = 0; i < lod.size(); ++i)
-//	{
-//		auto r2 = (static_cast<double>(i - filerSizeHalf) * (i - filerSizeHalf));
-//		lod[i] = exp(-(r2 / (2.0 * sigma * sigma)));
-//	}
-//
-//	VectorDouble mirror(centralData.vectorSql.size() + filerSizeHalf * 2);
-//
-//	for (int i = 0; i < mirror.size(); ++i)
-//	{
-//		auto ptr = i - filerSizeHalf;
-//		if (ptr < 0) { ptr = abs(ptr) - 1; }
-//		if (ptr > centralData.vectorSql.size() - 1) { ptr = centralData.vectorSql.size() - (ptr - centralData.vectorSql.size()) - 1; }
-//		mirror[i] = centralData.vectorSql[ptr].value;
-//	}
-//
-//	for (size_t i = 0; i < centralData.vectorSql.size(); ++i)
-//	{
-//		centralData.vectorView.push_back(std::inner_product(mirror.begin() + i, mirror.begin() + i + filterSize, lod.begin(), 0.0));
-//	}
-//}
 
 void TEST0136::readGroups()
 {
@@ -148,3 +123,22 @@ void TEST0136::currentIndexChangedSlot(const QModelIndex& current, const QModelI
 void TEST0136::setViewHorizontalSlot() { view->changeViewTypeSlot(ViewType::Horizontal); }
 void TEST0136::setViewVerticalSlot() { view->changeViewTypeSlot(ViewType::Vertical); }
 void TEST0136::setViewColumnlSlot() { view->changeViewTypeSlot(ViewType::Column); }
+
+void TEST0136::smoothCheckboxSlot(int state)
+{
+	if (state == Qt::Checked)
+	{
+		ui.smoothLevelSpin->setVisible(true);
+		view->smoothLevelSlot(ui.smoothLevelSpin->value());
+	}
+	else
+	{
+		ui.smoothLevelSpin->setVisible(false);
+		view->smoothLevelSlot(0);
+	}
+}
+
+void TEST0136::smoothSpinboxSlot(int num)
+{
+	view->smoothLevelSlot(ui.smoothLevelSpin->value());
+}

@@ -36,7 +36,7 @@
       <x>40</x>
       <y>350</y>
       <width>71</width>
-      <height>31</height>
+      <height>21</height>
      </rect>
     </property>
    </widget>
@@ -46,7 +46,7 @@
       <x>130</x>
       <y>350</y>
       <width>61</width>
-      <height>31</height>
+      <height>21</height>
      </rect>
     </property>
    </widget>
@@ -103,6 +103,35 @@
     </property>
     <property name="text">
      <string>Столбцы</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="smoothCheckbox">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>390</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Сглаживание</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="smoothLevelSpin">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>390</y>
+      <width>61</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>0</number>
+    </property>
+    <property name="maximum">
+     <number>20</number>
     </property>
    </widget>
   </widget>

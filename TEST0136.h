@@ -34,7 +34,6 @@ private:
 	void selectedGroupLoad();								// чтение выбранной группы
 	void groupSelectSpinSetup();							// сетап спинбокса для выбора группы
 	void tableSelectSpinSetup();							// сетап спинбокса для выбора таблицы
-	//void smoothValues();									// сглаживание данных
 
 public slots:
 	void selectedTableChangeSlot(int num);					// слот смены выбранной таблицы
@@ -42,5 +41,7 @@ public slots:
 	void setViewHorizontalSlot();							// слот для горизонтального отображения
 	void setViewVerticalSlot();								// слот для вертикального отображения
 	void setViewColumnlSlot();								// слот для отображения столбцами
+	void smoothCheckboxSlot(int state);						// слот включения сглаживания
+	void smoothSpinboxSlot(int num);						// слот уровня сглаживания
 	void currentIndexChangedSlot(const QModelIndex& current, const QModelIndex& previous);
 };

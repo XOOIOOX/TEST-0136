@@ -104,7 +104,6 @@ void viewWidget::eventPaint()
 void viewWidget::prepareVectorView()
 {
 	VectorDouble lod(filterSize);																			// НЧ-фильтр
-	double sigma = 2.0;
 	auto filerSizeHalf = (filterSize - 1) / 2;
 	vectorView.clear();
 
@@ -141,8 +140,18 @@ void viewWidget::changeViewTypeSlot(ViewType type)
 	update();
 }
 
-void viewWidget::setFilterSizeSlot(int size)
+void viewWidget::smoothLevelSlot(int num)
 {
-	filterSize = size;
+	if (num == 0)
+	{
+		filterSize = 1;
+		sigma = 1.0;
+	}
+	else
+	{
+		filterSize = 41;
+		sigma = (static_cast<double>(num) + 1.0) / 3.0;
+	}
+
 	update();
 }
