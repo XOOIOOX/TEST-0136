@@ -106,29 +106,30 @@ void viewWidget::eventPaint()
 		poly.remove(0);
 
 		int displaySize = (width() - border * 2.0);
-		auto k = static_cast<double>(displaySize) / static_cast<double>(poly.size());
+		auto koeff = static_cast<double>(displaySize) / static_cast<double>(poly.size());
 
-		for (int i = 0; i < displaySize; i += smoothLevel)
+		for (int i = 0; i < displaySize; i += smoothLevel + 2)
 		{
-			int it1 = static_cast<int>(i / k);
-			int it2 = static_cast<int>((i + 1) / k) + 1;
+			int it1 = static_cast<int>(i / koeff);
+			int it2 = static_cast<int>((i + 1) / koeff) + 1;
 
 			columnPoints.push_back({ i + border, std::accumulate(poly.begin() + it1, poly.begin() + it2, QPointF{ 0.0, 0.0 },
 																 [&](QPointF acc, QPointF val)-> QPointF { return{ val.x(), (acc.y() + val.y()) }; }).y() / (it2 - it1) });
 		}
 
 		painter.setPen(Qt::NoPen);
-		painter.setBrush(QBrush(QColor(ColorBlueTransp), Qt::SolidPattern));
 
 		for (int i = 0; i < columnPoints.size(); ++i)
 		{
 			if (columnPoints[i].y() <= firstPointPoly.y())
 			{
-				painter.drawRect(QRectF{ columnPoints[i].x(), columnPoints[i].y(), static_cast<double>(smoothLevel), firstPointPoly.y() - columnPoints[i].y() });
+				painter.setBrush(QBrush(QColor(ColorGreenTransp), Qt::SolidPattern));
+				painter.drawRect(QRectF{ columnPoints[i].x(), columnPoints[i].y(), static_cast<double>(smoothLevel) + 1, firstPointPoly.y() - columnPoints[i].y() });
 			}
 			else
 			{
-				painter.drawRect(QRectF{ columnPoints[i].x(), firstPointPoly.y(), static_cast<double>(smoothLevel), columnPoints[i].y() - firstPointPoly.y() });
+				painter.setBrush(QBrush(QColor(ColorRedTransp), Qt::SolidPattern));
+				painter.drawRect(QRectF{ columnPoints[i].x(), firstPointPoly.y(), static_cast<double>(smoothLevel) + 1, columnPoints[i].y() - firstPointPoly.y() });
 			}
 		}
 	}
