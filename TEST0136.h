@@ -15,6 +15,7 @@ class TEST0136 : public QMainWindow
 
 public:
 	TEST0136(QWidget* parent = Q_NULLPTR);
+	~TEST0136();
 
 private:
 	Ui::TEST0136Class ui;

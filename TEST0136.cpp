@@ -6,8 +6,13 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 	ui.setupUi(this);
 	dbase = QSqlDatabase::addDatabase("QSQLITE");
 	dbase.setDatabaseName("./sample.db");
-	if (!dbase.open()) { qDebug() << "Cannot read db!"; }
-	if (QSqlDatabase::drivers().isEmpty()) { qDebug() << "No drivers !"; }
+	if (!dbase.open())
+	{
+		dbase.setDatabaseName("/sample.db");
+		if (!dbase.open()) { qDebug() << "Cannot read db!"; dbase.close(); TEST0136::~TEST0136(); }
+	}
+
+	if (QSqlDatabase::drivers().isEmpty()) { qDebug() << "No drivers !"; dbase.close();  TEST0136::~TEST0136(); }
 
 	view = new viewWidget(centralData, ui.view);
 	tablesList = dbase.tables();
@@ -30,6 +35,8 @@ TEST0136::TEST0136(QWidget* parent) : QMainWindow(parent)
 	ui.smoothCheckbox->setCheckState(Qt::Unchecked);
 	smoothCheckboxSlot(Qt::Unchecked);
 }
+
+TEST0136::~TEST0136() { dbase.close(); }
 
 void TEST0136::selectedTableLoad()
 {
