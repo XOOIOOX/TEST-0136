@@ -105,24 +105,30 @@ void viewWidget::eventPaint()
 		poly.remove(vectorView.size() - 1);
 		poly.remove(0);
 
-		for (int i = 0; i < vectorView.size(); i += 1 + static_cast<int>(smoothLevel / 3.0))
+		int displaySize = (width() - border * 2.0);
+		auto k = static_cast<double>(displaySize) / static_cast<double>(poly.size());
+
+		for (int i = 0; i < displaySize; ++i)
 		{
-			columnPoints.push_back({ poly[i].x(), std::accumulate(poly.begin() + i, poly.begin() + i + smoothLevel, QPointF{ 0.0, 0.0 },
-																  [&](QPointF acc, QPointF val)-> QPointF { return{ val.x(), (acc.y() + val.y()) }; }).y() / smoothLevel });
+			int it1 = static_cast<int>(i / k);
+			int it2 = static_cast<int>((i + 1) / k) + 1;
+
+			columnPoints.push_back({ i + border, std::accumulate(poly.begin() + it1, poly.begin() + it2, QPointF{ 0.0, 0.0 },
+																 [&](QPointF acc, QPointF val)-> QPointF { return{ val.x(), (acc.y() + val.y()) }; }).y() / (it2 - it1) });
 		}
 
-		painter.setPen(QPen(QColor(ColorBlue), 1.0, Qt::SolidLine, Qt::RoundCap));
+		painter.setPen(Qt::NoPen);
 		painter.setBrush(QBrush(QColor(ColorBlueTransp), Qt::SolidPattern));
 
 		for (int i = 0; i < columnPoints.size(); ++i)
 		{
 			if (columnPoints[i].y() <= firstPointPoly.y())
 			{
-				painter.drawRect(QRectF{ columnPoints[i].x(), columnPoints[i].y(), static_cast<double>(smoothLevel) * 2.0, firstPointPoly.y() - columnPoints[i].y() });
+				painter.drawRect(QRectF{ columnPoints[i].x(), columnPoints[i].y(), 1, firstPointPoly.y() - columnPoints[i].y() });
 			}
 			else
 			{
-				painter.drawRect(QRectF{ columnPoints[i].x(), firstPointPoly.y(), static_cast<double>(smoothLevel) * 2.0, columnPoints[i].y() - firstPointPoly.y() });
+				painter.drawRect(QRectF{ columnPoints[i].x(), firstPointPoly.y(), 1, columnPoints[i].y() - firstPointPoly.y() });
 			}
 		}
 	}
