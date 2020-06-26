@@ -108,7 +108,7 @@ void viewWidget::eventPaint()
 		int displaySize = (width() - border * 2.0);
 		auto k = static_cast<double>(displaySize) / static_cast<double>(poly.size());
 
-		for (int i = 0; i < displaySize; ++i)
+		for (int i = 0; i < displaySize; i += smoothLevel)
 		{
 			int it1 = static_cast<int>(i / k);
 			int it2 = static_cast<int>((i + 1) / k) + 1;
@@ -124,11 +124,11 @@ void viewWidget::eventPaint()
 		{
 			if (columnPoints[i].y() <= firstPointPoly.y())
 			{
-				painter.drawRect(QRectF{ columnPoints[i].x(), columnPoints[i].y(), 1, firstPointPoly.y() - columnPoints[i].y() });
+				painter.drawRect(QRectF{ columnPoints[i].x(), columnPoints[i].y(), static_cast<double>(smoothLevel), firstPointPoly.y() - columnPoints[i].y() });
 			}
 			else
 			{
-				painter.drawRect(QRectF{ columnPoints[i].x(), firstPointPoly.y(), 1, columnPoints[i].y() - firstPointPoly.y() });
+				painter.drawRect(QRectF{ columnPoints[i].x(), firstPointPoly.y(), static_cast<double>(smoothLevel), columnPoints[i].y() - firstPointPoly.y() });
 			}
 		}
 	}

@@ -25,7 +25,7 @@ private:
 	VectorDouble vectorView;							// вектор значений
 	int filterSize{ 41 };								// размер фильтра (по умолчанию без сглаживания)
 	double sigma{ 1.0 };
-	int smoothLevel{ 0 };
+	int smoothLevel{ 1 };
 
 	void eventPaint();									// метод отрисовки
 	void prepareVectorView();							// подготовка верктора значений
