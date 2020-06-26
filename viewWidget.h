@@ -24,8 +24,8 @@ private:
 	QPointF minPoint{ 0.0, 0.0 };						// минимальная точка на графике
 	VectorDouble vectorView;							// вектор значений
 	int filterSize{ 41 };								// размер фильтра (по умолчанию без сглаживания)
-	double sigma{ 1.0 };
-	int smoothLevel{ 1 };
+	double sigma{ 1.0 };								// сигма (ширина) фильтрации
+	int smoothLevel{ 1 };								// уровень фильтрации
 
 	void eventPaint();									// метод отрисовки
 	void prepareVectorView();							// подготовка верктора значений

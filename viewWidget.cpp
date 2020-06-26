@@ -141,7 +141,7 @@ void viewWidget::eventPaint()
 
 void viewWidget::prepareVectorView()
 {
-	VectorDouble lod(filterSize);																			// НЧ-фильтр
+	VectorDouble lod(filterSize);
 	auto filerSizeHalf = (filterSize - 1) / 2;
 	vectorView.clear();
 
