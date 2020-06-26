@@ -40,6 +40,7 @@ void viewWidget::eventPaint()
 	switch (viewType)
 	{
 		case ViewType::Horizontal:
+		case ViewType::Column:
 		{
 			firstPointPoly = { border, height() / 2.0 };
 			lastPointPoly = { width() - border, height() / 2.0 };
@@ -55,7 +56,6 @@ void viewWidget::eventPaint()
 			lastPointLine = lastPointPoly + QPointF{ 0.0, border / 2.0 };
 			break;
 		}
-		case ViewType::Column: { break; }
 		default: { break; }
 	}
 
@@ -69,6 +69,7 @@ void viewWidget::eventPaint()
 		switch (viewType)
 		{
 			case ViewType::Horizontal:
+			case ViewType::Column:
 			{
 				point = { ((double)i / vectorView.size()) * (width() - border * 2.0) + border,
 					((-vectorView[i] + rangeValue / 2.0) / rangeValue) * (height() - border * 2.0) + border };
@@ -81,7 +82,7 @@ void viewWidget::eventPaint()
 
 				break;
 			}
-			case ViewType::Column: { break; }
+
 			default: { break; }
 		}
 
@@ -92,9 +93,39 @@ void viewWidget::eventPaint()
 
 	poly << lastPointPoly;
 
-	painter.setPen(QPen(QColor(ColorBlue), 1.0, Qt::SolidLine, Qt::RoundCap));
-	painter.setBrush(QBrush(QColor(ColorBlueTransp), Qt::SolidPattern));
-	painter.drawPolygon(poly);
+	if (viewType == ViewType::Horizontal || viewType == ViewType::Vertical)
+	{
+		painter.setPen(QPen(QColor(ColorBlue), 1.0, Qt::SolidLine, Qt::RoundCap));
+		painter.setBrush(QBrush(QColor(ColorBlueTransp), Qt::SolidPattern));
+		painter.drawPolygon(poly);
+	}
+	else
+	{
+		std::vector<QPointF> columnPoints;
+		poly.remove(vectorView.size() - 1);
+		poly.remove(0);
+
+		for (int i = 0; i < vectorView.size(); i += 1 + static_cast<int>(smoothLevel / 3.0))
+		{
+			columnPoints.push_back({ poly[i].x(), std::accumulate(poly.begin() + i, poly.begin() + i + smoothLevel, QPointF{ 0.0, 0.0 },
+																  [&](QPointF acc, QPointF val)-> QPointF { return{ val.x(), (acc.y() + val.y()) }; }).y() / smoothLevel });
+		}
+
+		painter.setPen(QPen(QColor(ColorBlue), 1.0, Qt::SolidLine, Qt::RoundCap));
+		painter.setBrush(QBrush(QColor(ColorBlueTransp), Qt::SolidPattern));
+
+		for (int i = 0; i < columnPoints.size(); ++i)
+		{
+			if (columnPoints[i].y() <= firstPointPoly.y())
+			{
+				painter.drawRect(QRectF{ columnPoints[i].x(), columnPoints[i].y(), static_cast<double>(smoothLevel) * 2.0, firstPointPoly.y() - columnPoints[i].y() });
+			}
+			else
+			{
+				painter.drawRect(QRectF{ columnPoints[i].x(), firstPointPoly.y(), static_cast<double>(smoothLevel) * 2.0, columnPoints[i].y() - firstPointPoly.y() });
+			}
+		}
+	}
 
 	painter.setPen(QPen(QColor(ColorOrange), 1.0, Qt::SolidLine, Qt::RoundCap));
 	painter.setBrush(QBrush(Qt::NoBrush));
@@ -149,9 +180,10 @@ void viewWidget::smoothLevelSlot(int num)
 	}
 	else
 	{
-		filterSize = 41;
-		sigma = (static_cast<double>(num) + 1.0) / 3.0;
+		filterSize = num * 2 + 1;
+		sigma = static_cast<double>(num) / 3.0 + 1.0;
 	}
 
+	smoothLevel = num + 1;
 	update();
 }

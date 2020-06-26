@@ -110,12 +110,12 @@
      <rect>
       <x>470</x>
       <y>390</y>
-      <width>101</width>
+      <width>91</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>Сглаживание</string>
+     <string>Фильтрация</string>
     </property>
    </widget>
    <widget class="QSpinBox" name="smoothLevelSpin">
