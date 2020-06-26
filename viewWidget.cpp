@@ -180,16 +180,8 @@ void viewWidget::changeViewTypeSlot(ViewType type)
 
 void viewWidget::smoothLevelSlot(int num)
 {
-	if (num == 0)
-	{
-		filterSize = 1;
-		sigma = 1.0;
-	}
-	else
-	{
-		filterSize = num * 2 + 1;
-		sigma = static_cast<double>(num) / 3.0 + 1.0;
-	}
+	if (num == 0) { filterSize = 1; sigma = 1.0; }
+	else { filterSize = num * 2 + 1; sigma = static_cast<double>(num) / 3.0 + 1.0; }
 
 	smoothLevel = num + 1;
 	update();

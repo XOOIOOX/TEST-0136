@@ -32,5 +32,5 @@ private:
 
 public slots:
 	void changeViewTypeSlot(ViewType type);				// слот смены типа отображения
-	void smoothLevelSlot(int num);					// слот установки размера фильтра
+	void smoothLevelSlot(int num);						// слот установки размера фильтра
 };
