@@ -14,6 +14,13 @@
 
 enum class ViewType { Horizontal, Vertical, Column };		// режим отображения графического представления
 
+struct sqlRow
+{
+	QDateTime date{ QDateTime::fromSecsSinceEpoch(0u) };
+	double value{ 0.0 };
+	int group{ 0 };
+};
+
 //////////////////////////////////////////////////////////////////////////
 // Удобные юзинги
 //////////////////////////////////////////////////////////////////////////
@@ -29,13 +36,6 @@ using uint64 = uint64_t;
 using VectorSql = std::vector<sqlRow>;
 using VectorDouble = std::vector<double>;
 using ListInt = std::list<int>;
-
-struct sqlRow
-{
-	QDateTime date{ QDateTime::fromSecsSinceEpoch(0u) };
-	double value{ 0.0 };
-	int group{ 0 };
-};
 
 struct CentralDataStruct
 {
