@@ -2,15 +2,16 @@
 
 #include <vector>
 #include "QDateTime"
+#include "QColor"
 
-#define BadIndex	-1										// индекс вне диапазона
+constexpr int BadIndex{ -1 };								// индекс вне диапазона
 
-#define ColorOrange				255, 137, 27, 255			// оранжевый
-#define ColorBlue				43, 181, 255				// синий
-#define ColorBlueTransp			43, 181, 255, 95			// синий прозрачный
-#define ColorGreenTransp		0, 255, 0, 110				// зеленый прозрачный
-#define ColorRedTransp			255, 0, 0, 110				// красный прозрачный
-#define ViewBorder				20							// бордюр для отображения графического представления
+constexpr QColor ColorOrange{ 255, 137, 27, 255 };			// оранжевый
+constexpr QColor ColorBlue{ 43, 181, 255 };					// синий
+constexpr QColor ColorBlueTransp{ 43, 181, 255, 95 };		// синий прозрачный
+constexpr QColor ColorGreenTransp{ 0, 255, 0, 110 };		// зеленый прозрачный
+constexpr QColor ColorRedTransp{ 255, 0, 0, 110 };			// красный прозрачный
+constexpr double ViewBorder{ 20 };							// бордюр для отображения графического представления
 
 enum class ViewType { Horizontal, Vertical, Column };		// режим отображения графического представления
 
